@@ -1,5 +1,5 @@
 <section id="main">
-    <?= $this->projectHeader->render($project, 'TaskGanttController', 'show', 'Gantt') ?>
+    <?= $this->projectHeader->render($project, 'TaskGanttController', 'show', false, 'Gantt') ?>
     <div class="menu-inline">
         <ul>
             <li <?= $sorting === 'board' ? 'class="active"' : '' ?>>
