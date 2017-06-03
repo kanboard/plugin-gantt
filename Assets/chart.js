@@ -5,6 +5,7 @@ var Gantt = function() {
     this.options = {
         container: "#gantt-chart",
         showWeekends: true,
+        showToday: true,
         allowMoves: true,
         allowResizes: true,
         cellWidth: 21,
@@ -141,6 +142,9 @@ Gantt.prototype.renderGrid = function(dates) {
                 var cellDiv = jQuery("<div>", { "class": "ganttview-grid-row-cell" });
                 if (this.options.showWeekends && this.isWeekend(dates[y][m][d])) {
                     cellDiv.addClass("ganttview-weekend");
+                }
+                if (this.options.showToday && this.isToday(dates[y][m][d])) {
+                    cellDiv.addClass("ganttview-today");
                 }
                 rowDiv.append(cellDiv);
             }
@@ -449,6 +453,12 @@ Gantt.prototype.daysBetween = function(start, end) {
 Gantt.prototype.isWeekend = function(date) {
     return date.getDay() % 6 == 0;
 };
+
+// Return true if it's today
+Gantt.prototype.isToday = function(date) {
+   var today = new Date();
+   return today.toDateString() == date.toDateString();
+ };
 
 // Clone Date object
 Gantt.prototype.cloneDate = function(date) {

@@ -87,6 +87,10 @@ div.ganttview-grid-row-cell.ganttview-weekend {
     background-color: #fafafa;
 }
 
+div.ganttview-grid-row-cell.ganttview-today {
+    background-color: #fcf8e3;
+}
+
 div.ganttview-blocks {
     margin-top: 40px;
 }
