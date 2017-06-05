@@ -21,6 +21,7 @@ class Plugin extends Base
         $this->template->hook->attach('template:project-header:view-switcher', 'Gantt:project_header/views');
         $this->template->hook->attach('template:project:dropdown', 'Gantt:project/dropdown');
         $this->template->hook->attach('template:project-list:menu:after', 'Gantt:project_list/menu');
+        $this->template->hook->attach('template:config:sidebar', 'Gantt:config/sidebar');
 
         $this->hook->on('template:layout:js', array('template' => 'plugins/Gantt/Assets/chart.js'));
         $this->hook->on('template:layout:js', array('template' => 'plugins/Gantt/Assets/gantt.js'));
@@ -70,4 +71,3 @@ class Plugin extends Base
         return '>=1.0.43';
     }
 }
-
