@@ -22,8 +22,12 @@ class TaskGanttController extends BaseController
     {
         $project = $this->getProject();
         $search = $this->helper->projectHeader->getSearchQuery($project);
-        $sorting = $this->request->getStringParam('sorting', 'board');
+        $sorting = $this->request->getStringParam('sorting', '');
         $filter = $this->taskLexer->build($search)->withFilter(new TaskProjectFilter($project['id']));
+
+        if($sorting === '') {
+          $sorting = $this->configModel->get('gantt_task_sort', 'board');
+        }
 
         if ($sorting === 'date') {
             $filter->getQuery()->asc(TaskModel::TABLE.'.date_started')->asc(TaskModel::TABLE.'.date_creation');
