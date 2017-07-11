@@ -68,6 +68,7 @@ Gantt.prototype.renderVerticalHeader = function() {
             .append("&nbsp;");
 
         if (this.data[i].type == "task") {
+            content.append(jQuery('<strong>').text('#'+this.data[i].id+' '));
             content.append(jQuery("<a>", {"href": this.data[i].link, "title": this.data[i].title}).text(this.data[i].title));
         }
         else {
@@ -181,7 +182,12 @@ Gantt.prototype.addBlocks = function(slider, start) {
         var series = this.data[i];
         var size = this.daysBetween(series.start, series.end) + 1;
         var offset = this.daysBetween(start, series.start);
-        var text = jQuery("<div>", {"class": "ganttview-block-text"});
+        var text = jQuery("<div>", {
+          "class": "ganttview-block-text",
+          "css": {
+              "width": ((size * this.options.cellWidth) - 19) + "px"
+          }
+        });
 
         var block = jQuery("<div>", {
             "class": "ganttview-block tooltip" + (this.options.allowMoves ? " ganttview-block-movable" : ""),
@@ -194,6 +200,9 @@ Gantt.prototype.addBlocks = function(slider, start) {
 
         if (size >= 2) {
             text.append(series.progress);
+        }
+        if (size >= 4) {
+          text.append(' - #'+series.id+' '+series.title);
         }
 
         block.data("record", series);
@@ -213,7 +222,7 @@ Gantt.prototype.getVerticalHeaderTooltip = function(record) {
                 .append(jQuery("<strong>").text(record.column_title))
                 .append(document.createTextNode(' (' + record.progress + ')'))
                 .append(jQuery("<br>"))
-                .append(document.createTextNode(record.title)).prop('outerHTML');
+                .append(document.createTextNode('#'+record.id+' '+record.title)).prop('outerHTML');
     }
     else {
         var types = ["project-manager", "project-member"];
@@ -247,7 +256,7 @@ Gantt.prototype.getBarTooltip = function(record) {
     else {
         if (record.type == "task") {
             var assigneeLabel = $(this.options.container).data("label-assignee");
-            tooltip += jQuery("<strong>").text(record.progress).prop('outerHTML');
+            tooltip += jQuery("<strong>").text('#'+record.id+' '+record.title+' ('+record.progress+')').prop('outerHTML');
             tooltip += "<br>";
             tooltip += jQuery('<span>').append(document.createTextNode(assigneeLabel + " " + (record.assignee ? record.assignee : ''))).prop('outerHTML');
             tooltip += "<br>";

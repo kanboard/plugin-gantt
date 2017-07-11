@@ -123,6 +123,9 @@ div.ganttview-block-text {
     font-size: 0.7em;
     color: #999;
     padding: 2px 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
