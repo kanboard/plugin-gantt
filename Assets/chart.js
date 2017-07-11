@@ -250,10 +250,6 @@ Gantt.prototype.getVerticalHeaderTooltip = function(record) {
 Gantt.prototype.getBarTooltip = function(record) {
     var tooltip = "";
 
-    if (record.not_defined) {
-        tooltip = $(this.options.container).data("label-not-defined");
-    }
-    else {
         if (record.type == "task") {
             var assigneeLabel = $(this.options.container).data("label-assignee");
             tooltip += jQuery("<strong>").text('#'+record.id+' '+record.title+' ('+record.progress+')').prop('outerHTML');
@@ -262,35 +258,42 @@ Gantt.prototype.getBarTooltip = function(record) {
             tooltip += "<br>";
         }
 
+        if (record.not_defined) {
+          tooltip += jQuery("<i>").text($(this.options.container).data("label-not-defined")).prop('outerHTML');
+          tooltip += "<br>";
+        }
         tooltip += $(this.options.container).data("label-start-date") + " " + $.datepicker.formatDate('yy-mm-dd', record.start) + "<br/>";
         tooltip += $(this.options.container).data("label-end-date") + " " + $.datepicker.formatDate('yy-mm-dd', record.end);
-    }
 
     return tooltip;
 };
 
 // Set bar color
 Gantt.prototype.setBarColor = function(block, record) {
+    block.css("background-color", record.color.background);
+    block.css("border-color", record.color.border);
     if (record.not_defined) {
         block.addClass("ganttview-block-not-defined");
-    }
-    else {
-        block.css("background-color", record.color.background);
-        block.css("border-color", record.color.border);
-
-        if (record.progress != "0%") {
-            block.append(jQuery("<div>", {
-                "css": {
-                    "z-index": 0,
-                    "position": "absolute",
-                    "top": 0,
-                    "bottom": 0,
-                    "background-color": record.color.border,
-                    "width": record.progress,
-                    "opacity": 0.4
-                }
-            }));
+        if (record.date_started_not_defined) {
+            block.css("border-left", "2px solid gray");
         }
+        if (record.date_due_not_defined) {
+          block.css("border-right", "2px solid gray");
+        }
+    }
+
+    if (record.progress != "0%") {
+        block.append(jQuery("<div>", {
+            "css": {
+                "z-index": 0,
+                "position": "absolute",
+                "top": 0,
+                "bottom": 0,
+                "background-color": record.color.border,
+                "width": record.progress,
+                "opacity": 0.4
+            }
+        }));
     }
 };
 

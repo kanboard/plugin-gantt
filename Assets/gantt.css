@@ -112,11 +112,6 @@ div.ganttview-block {
     cursor: move;
 }
 
-div.ganttview-block-not-defined {
-    border-color: #000;
-    background-color: #000;
-}
-
 div.ganttview-block-text {
     position: absolute;
     height: 12px;
