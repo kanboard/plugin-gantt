@@ -343,12 +343,23 @@ Gantt.prototype.updateDataAndPosition = function(block, startDate) {
     // Set new start date
     var daysFromStart = Math.round(offset / this.options.cellWidth);
     var newStart = this.addDays(this.cloneDate(startDate), daysFromStart);
-    record.start = newStart;
+    if (!record.date_started_not_defined || this.compareDate(newStart, record.start)) {
+        record.start = this.addDays(this.cloneDate(startDate), daysFromStart+1);
+    }
+    else if (record.date_started_not_defined) {
+        delete record.start;
+    }
 
     // Set new end date
     var width = block.outerWidth();
     var numberOfDays = Math.round(width / this.options.cellWidth) - 1;
-    record.end = this.addDays(this.cloneDate(newStart), numberOfDays);
+    var newEnd = this.addDays(this.cloneDate(newStart), numberOfDays);
+    if (!record.date_due_not_defined || this.compareDate(newEnd, record.end)) {
+        record.end = newEnd;
+    }
+    else if (record.date_due_not_defined) {
+        delete record.end;
+    }
 
     if (record.type === "task" && numberOfDays > 0) {
         jQuery("div.ganttview-block-text", block).text(record.progress);
