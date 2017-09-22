@@ -52,9 +52,9 @@ class TaskGanttFormatter extends BaseFormatter implements FormatterInterface
         }
 
         $start = $task['date_started'] ?: time();
-        $end = $task['date_due'] ?: $start;
+        $end = $task['date_completed'] ?: ($task['date_due'] ?:$start);
 
-        return array(
+        $task_id = array(
             'type' => 'task',
             'id' => $task['id'],
             'title' => $task['title'],
@@ -63,17 +63,25 @@ class TaskGanttFormatter extends BaseFormatter implements FormatterInterface
                 (int) date('n', $start),
                 (int) date('j', $start),
             ),
-            'end' => array(
-                (int) date('Y', $end),
-                (int) date('n', $end),
-                (int) date('j', $end),
+            'due' => array(
+                (int) date('Y', $task['date_due'] ?:$start),
+                (int) date('n', $task['date_due'] ?:$start),
+                (int) date('j', $task['date_due'] ?:$start),
             ),
             'column_title' => $task['column_name'],
             'assignee' => $task['assignee_name'] ?: $task['assignee_username'],
             'progress' => $this->taskModel->getProgress($task, $this->columns[$task['project_id']]).'%',
             'link' => $this->helper->url->href('TaskViewController', 'show', array('project_id' => $task['project_id'], 'task_id' => $task['id'])),
             'color' => $this->colorModel->getColorProperties($task['color_id']),
-            'not_defined' => empty($task['date_due']) || empty($task['date_started']),
+            'not_defined' => (empty($task['date_due']) && empty($task['date_completed'])) || empty($task['date_started']),
         );
+        if (!empty($task['date_completed'])) {
+            $task_id['end'] = array(
+                (int) date('Y', $task['date_completed']),
+                (int) date('n', $task['date_completed']),
+                (int) date('j', $task['date_completed'])
+            );
+        }
+        return $task_id;
     }
 }

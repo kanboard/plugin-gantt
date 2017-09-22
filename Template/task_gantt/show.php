@@ -20,11 +20,12 @@
             data-records='<?= json_encode($tasks, JSON_HEX_APOS) ?>'
             data-save-url="<?= $this->url->href('TaskGanttController', 'save', array('project_id' => $project['id'], 'plugin' => 'Gantt')) ?>"
             data-label-start-date="<?= t('Start date:') ?>"
-            data-label-end-date="<?= t('Due date:') ?>"
+            data-label-due-date="<?= t('Due date:') ?>"
+            data-label-end-date="<?= t('End date:') ?>"
             data-label-assignee="<?= t('Assignee:') ?>"
-            data-label-not-defined="<?= t('There is no start date or due date for this task.') ?>"
+            data-label-not-defined="<?= t('There is no start date or due date or end date for this task.') ?>"
         ></div>
-        <p class="alert alert-info"><?= t('Moving or resizing a task will change the start and due date of the task.') ?></p>
+        <p class="alert alert-info"><?= t('Moving or resizing a task will change the start and due date of the task (or its end date if its already closed).') ?></p>
     <?php else: ?>
         <p class="alert"><?= t('There is no task in your project.') ?></p>
     <?php endif ?>
