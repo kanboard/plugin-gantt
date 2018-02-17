@@ -41,18 +41,22 @@ class TaskGanttController extends BaseController
     }
 
     /**
-     * Save new task start date and due date
+     * Save new task start date and due date or end date (if the task is already closed)
      */
     public function save()
     {
         $this->getProject();
         $values = $this->request->getJson();
-
-        $result = $this->taskModificationModel->update(array(
+        $data = array(
             'id' => $values['id'],
             'date_started' => strtotime($values['start']),
-            'date_due' => strtotime($values['end']),
-        ));
+            'date_due' => strtotime($values['due']),
+        );
+        if (isset($values['end']) && !empty($values['end'])) {
+            unset($data['date_due']);
+            $data['date_completed'] = strtotime($values['end']);
+        }
+        $result = $this->taskModificationModel->update($data);
 
         if (! $result) {
             $this->response->json(array('message' => 'Unable to save task'), 400);

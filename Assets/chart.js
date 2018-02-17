@@ -254,7 +254,12 @@ Gantt.prototype.getBarTooltip = function(record) {
         }
 
         tooltip += $(this.options.container).data("label-start-date") + " " + $.datepicker.formatDate('yy-mm-dd', record.start) + "<br/>";
-        tooltip += $(this.options.container).data("label-end-date") + " " + $.datepicker.formatDate('yy-mm-dd', record.end);
+        if (record.end) {
+            tooltip += $(this.options.container).data("label-end-date") + " " + $.datepicker.formatDate('yy-mm-dd', record.end);
+        }
+        if (!record.end) {
+            tooltip += $(this.options.container).data("label-due-date") + " " + $.datepicker.formatDate('yy-mm-dd', record.due);
+        }
     }
 
     return tooltip;
@@ -388,8 +393,13 @@ Gantt.prototype.prepareData = function(data) {
         var start = new Date(data[i].start[0], data[i].start[1] - 1, data[i].start[2], 0, 0, 0, 0);
         data[i].start = start;
 
-        var end = new Date(data[i].end[0], data[i].end[1] - 1, data[i].end[2], 0, 0, 0, 0);
-        data[i].end = end;
+        var due = new Date(data[i].due[0], data[i].due[1] - 1, data[i].due[2], 0, 0, 0, 0);
+        data[i].due = due;
+        
+        if (data[i].end) {
+        		var end = new Date(data[i].end[0], data[i].end[1] - 1, data[i].end[2], 0, 0, 0, 0);
+            data[i].end = end;
+        }
     }
 
     return data;
@@ -404,8 +414,13 @@ Gantt.prototype.getDateRange = function(minDays) {
         var start = new Date();
         start.setTime(Date.parse(this.data[i].start));
 
-        var end = new Date();
-        end.setTime(Date.parse(this.data[i].end));
+        if (this.data[i].end) {
+            var end = new Date();
+            end.setTime(Date.parse(this.data[i].end));
+        } else {
+            var end = new Date();
+            end.setTime(Date.parse(this.data[i].due));
+        }
 
         if (i == 0) {
             minStart = start;
