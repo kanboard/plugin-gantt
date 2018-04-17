@@ -12,9 +12,6 @@ class Plugin extends Base
 {
     public function initialize()
     {
-        $this->projectAccessMap->add('TaskGanttController', '*', Role::PROJECT_MANAGER);
-        $this->applicationAccessMap->add('ProjectGanttController', '*', Role::APP_MANAGER);
-
         $this->route->addRoute('gantt/:project_id', 'TaskGanttController', 'show', 'plugin');
         $this->route->addRoute('gantt/:project_id/sort/:sorting', 'TaskGanttController', 'show', 'plugin');
 
