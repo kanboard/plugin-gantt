@@ -56,6 +56,13 @@ Gantt.prototype.show = function() {
     }
 };
 
+Gantt.prototype.infoTooltip = function(content) {
+    var markdown = $("<div>", {"class": "markdown"}).append(content);
+    var script = $("<script>", {"type": "text/template"}).append(markdown);
+    var icon = $('<i>', {"class": "fa fa-info-circle"});
+    return $('<span>', {"class": "tooltip"}).append(icon).append(script);
+};
+
 // Render record list on the left
 Gantt.prototype.renderVerticalHeader = function() {
     var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
@@ -64,7 +71,7 @@ Gantt.prototype.renderVerticalHeader = function() {
 
     for (var i = 0; i < this.data.length; i++) {
         var content = jQuery("<span>")
-            .append(jQuery("<i>", {"class": "fa fa-info-circle tooltip", "title": this.getVerticalHeaderTooltip(this.data[i])}))
+            .append(this.infoTooltip(this.getVerticalHeaderTooltip(this.data[i])))
             .append("&nbsp;");
 
         if (this.data[i].type == "task") {
@@ -190,19 +197,20 @@ Gantt.prototype.addBlocks = function(slider, start) {
         });
 
         var block = jQuery("<div>", {
-            "class": "ganttview-block tooltip" + (this.options.allowMoves ? " ganttview-block-movable" : ""),
-            "title": this.getBarTooltip(series),
+            "class": "ganttview-block" + (this.options.allowMoves ? " ganttview-block-movable" : ""),
             "css": {
                 "width": ((size * this.options.cellWidth) - 9) + "px",
                 "margin-left": (offset * this.options.cellWidth) + "px"
             }
         }).append(text);
 
-        if (size >= 2) {
-            text.append(series.progress);
-        }
-        if (size >= 4) {
-          text.append(' - #'+series.id+' '+series.title);
+        if (series.type === 'task') {
+            if (size >= 4) {
+                text.append($('<span>', {title: "test"}).text(series.progress + ' - #' + series.id + ' ' + series.title));
+            }
+            else if (size >= 2) {
+                text.append($('<span>').text(series.progress));
+            }
         }
 
         block.data("record", series);
@@ -215,55 +223,57 @@ Gantt.prototype.addBlocks = function(slider, start) {
 
 // Get tooltip for vertical header
 Gantt.prototype.getVerticalHeaderTooltip = function(record) {
-    var tooltip = "";
-
-    if (record.type == "task") {
-        tooltip = jQuery("<span>")
-                .append(jQuery("<strong>").text(record.column_title))
-                .append(document.createTextNode(' (' + record.progress + ')'))
-                .append(jQuery("<br>"))
-                .append(document.createTextNode('#'+record.id+' '+record.title)).prop('outerHTML');
-    }
-    else {
-        var types = ["project-manager", "project-member"];
-
-        for (var index in types) {
-            var type = types[index];
-            if (! jQuery.isEmptyObject(record.users[type])) {
-                var list = jQuery("<ul>");
-
-                for (var user_id in record.users[type]) {
-                    if (user_id) {
-                        list.append(jQuery("<li>").text(record.users[type][user_id]));
-                    }
-                }
-
-                tooltip += "<p><strong>" + $(this.options.container).data("label-" + type) + "</strong></p>" + list.prop('outerHTML');
-            }
-        }
+    if (record.type === 'task') {
+        return this.getTaskTooltip(record);
     }
 
-    return tooltip;
+    return this.getProjectTooltip(record);
 };
 
-// Get tooltip for bars
-Gantt.prototype.getBarTooltip = function(record) {
-    var tooltip = "";
+Gantt.prototype.getTaskTooltip = function(record) {
+    var assigneeLabel = $(this.options.container).data("label-assignee");
+    var tooltip = $('<span>')
+        .append($('<strong>').text(record.column_title + ' (' + record.progress + ')'))
+        .append($('<br>'))
+        .append($('<span>').text('#' + record.id + ' ' + record.title))
+        .append($('<br>'))
+        .append($('<span>').text(assigneeLabel + ' ' + (record.assignee ? record.assignee : '')));
 
-        if (record.type == "task") {
-            var assigneeLabel = $(this.options.container).data("label-assignee");
-            tooltip += jQuery("<strong>").text('#'+record.id+' '+record.title+' ('+record.progress+')').prop('outerHTML');
-            tooltip += "<br>";
-            tooltip += jQuery('<span>').append(document.createTextNode(assigneeLabel + " " + (record.assignee ? record.assignee : ''))).prop('outerHTML');
-            tooltip += "<br>";
+    return this.getTooltipFooter(record, tooltip);
+};
+
+Gantt.prototype.getProjectTooltip = function(record) {
+    var tooltip = $('<span>');
+
+    if ('project-manager' in record.users) {
+        var projectManagerLabel = $(this.options.container).data('label-project-manager');
+        var list = $('<ul>');
+
+        for (var user_id in record.users['project-manager']) {
+            list.append($('<li>').append($('<span>').text(record.users['project-manager'][user_id])));
         }
 
-        if (record.not_defined) {
-          tooltip += jQuery("<i>").text($(this.options.container).data("label-not-defined")).prop('outerHTML');
-          tooltip += "<br>";
-        }
-        tooltip += $(this.options.container).data("label-start-date") + " " + $.datepicker.formatDate('yy-mm-dd', record.start) + "<br/>";
-        tooltip += $(this.options.container).data("label-end-date") + " " + $.datepicker.formatDate('yy-mm-dd', record.end);
+        tooltip.append($('<strong>').text(projectManagerLabel));
+        tooltip.append($('<br>'));
+        tooltip.append(list);
+    }
+
+    return this.getTooltipFooter(record, tooltip);
+};
+
+Gantt.prototype.getTooltipFooter = function(record, tooltip) {
+    var notDefinedLabel = $(this.options.container).data("label-not-defined");
+    var startDateLabel = $(this.options.container).data("label-start-date");
+    var startEndLabel = $(this.options.container).data("label-end-date");
+
+    if (record.not_defined) {
+        tooltip.append($('<br>')).append($('<em>').text(notDefinedLabel));
+    } else {
+        tooltip.append($('<br>'));
+        tooltip.append($('<strong>').text(startDateLabel + ' ' + $.datepicker.formatDate('yy-mm-dd', record.start)));
+        tooltip.append($('<br>'));
+        tooltip.append($('<strong>').text(startEndLabel + ' ' + $.datepicker.formatDate('yy-mm-dd', record.end)));
+    }
 
     return tooltip;
 };
@@ -364,9 +374,6 @@ Gantt.prototype.updateDataAndPosition = function(block, startDate) {
     if (record.type === "task" && numberOfDays > 0) {
         jQuery("div.ganttview-block-text", block).text(record.progress);
     }
-
-    // Update tooltip
-    block.attr("title", this.getBarTooltip(record));
 
     block.data("record", record);
 

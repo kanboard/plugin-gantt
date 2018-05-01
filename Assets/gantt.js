@@ -17,7 +17,6 @@ KB.on('dom.ready', function () {
         var chart = new Gantt();
         chart.show();
 
-        var tooltip = new Kanboard.Tooltip();
-        tooltip.execute();
+        KB.tooltip();
     }
 });
