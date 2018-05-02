@@ -126,3 +126,11 @@ div.ganttview-block-text {
 div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
     bottom: 0;
 }
+
+div.ganttview-progress-bar {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    opacity: 0.4;
+}

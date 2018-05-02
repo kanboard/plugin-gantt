@@ -12,7 +12,7 @@ Author
 Requirements
 ------------
 
-- Kanboard >= 1.0.43
+- Kanboard > 1.2.3
 
 Installation
 ------------

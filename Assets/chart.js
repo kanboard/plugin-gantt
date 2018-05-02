@@ -205,12 +205,7 @@ Gantt.prototype.addBlocks = function(slider, start) {
         }).append(text);
 
         if (series.type === 'task') {
-            if (size >= 4) {
-                text.append($('<span>', {title: "test"}).text(series.progress + ' - #' + series.id + ' ' + series.title));
-            }
-            else if (size >= 2) {
-                text.append($('<span>').text(series.progress));
-            }
+            this.addTaskBarText(text, series, size);
         }
 
         block.data("record", series);
@@ -218,6 +213,15 @@ Gantt.prototype.addBlocks = function(slider, start) {
 
         jQuery(rows[rowIdx]).append(block);
         rowIdx = rowIdx + 1;
+    }
+};
+
+Gantt.prototype.addTaskBarText = function(container, record, size) {
+    if (size >= 4) {
+        container.html($('<span>').text(record.progress + ' - #' + record.id + ' ' + record.title));
+    }
+    else if (size >= 2) {
+        container.html($('<span>').text(record.progress));
     }
 };
 
@@ -282,28 +286,31 @@ Gantt.prototype.getTooltipFooter = function(record, tooltip) {
 Gantt.prototype.setBarColor = function(block, record) {
     block.css("background-color", record.color.background);
     block.css("border-color", record.color.border);
+
     if (record.not_defined) {
-        block.addClass("ganttview-block-not-defined");
         if (record.date_started_not_defined) {
-            block.css("border-left", "2px solid gray");
+            block.css("border-left", "2px solid #000");
         }
+
         if (record.date_due_not_defined) {
-          block.css("border-right", "2px solid gray");
+            block.css("border-right", "2px solid #000");
         }
     }
 
     if (record.progress != "0%") {
-        block.append(jQuery("<div>", {
-            "css": {
-                "z-index": 0,
-                "position": "absolute",
-                "top": 0,
-                "bottom": 0,
-                "background-color": record.color.border,
-                "width": record.progress,
-                "opacity": 0.4
-            }
-        }));
+        var progressBar = $(block).find(".ganttview-progress-bar");
+
+        if (progressBar.length) {
+            progressBar.css("width", record.progress);
+        } else {
+            block.append(jQuery("<div>", {
+                "class": "ganttview-progress-bar",
+                "css": {
+                    "background-color": record.color.border,
+                    "width": record.progress,
+                }
+            }));
+        }
     }
 };
 
@@ -354,7 +361,8 @@ Gantt.prototype.updateDataAndPosition = function(block, startDate) {
     var daysFromStart = Math.round(offset / this.options.cellWidth);
     var newStart = this.addDays(this.cloneDate(startDate), daysFromStart);
     if (!record.date_started_not_defined || this.compareDate(newStart, record.start)) {
-        record.start = this.addDays(this.cloneDate(startDate), daysFromStart+1);
+        record.start = this.addDays(this.cloneDate(startDate), daysFromStart);
+        record.date_started_not_defined = true;
     }
     else if (record.date_started_not_defined) {
         delete record.start;
@@ -366,13 +374,14 @@ Gantt.prototype.updateDataAndPosition = function(block, startDate) {
     var newEnd = this.addDays(this.cloneDate(newStart), numberOfDays);
     if (!record.date_due_not_defined || this.compareDate(newEnd, record.end)) {
         record.end = newEnd;
+        record.date_due_not_defined = true;
     }
     else if (record.date_due_not_defined) {
         delete record.end;
     }
 
     if (record.type === "task" && numberOfDays > 0) {
-        jQuery("div.ganttview-block-text", block).text(record.progress);
+        this.addTaskBarText(jQuery("div.ganttview-block-text", block), record, numberOfDays);
     }
 
     block.data("record", record);
