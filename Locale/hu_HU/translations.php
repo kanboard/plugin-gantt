@@ -1,18 +1,18 @@
 <?php
 
 return array(
-    'Sort by position' => 'Rendezés hely szerint',
-    'Sort by date' => 'Rendezés idő szerint',
+    'Sort by position' => 'Rendezés pozíció szerint',
+    'Sort by date' => 'Rendezés dátum szerint',
     'Add task' => 'Feladat hozzáadása',
-    'There is no start date or due date for this task.' => 'Ehhez a feladathoz nem adtak meg kezdési időt vagy határidőt.',
-    'Moving or resizing a task will change the start and due date of the task.' => 'A feladat elmozgatása vagy méretének megváltoztatása meg fogja változtatni a feladat kezdési idejét és határidejét.',
-    'There is no task in your project.' => 'Az ön projektjében nincsenek feladatok.',
-    'Gantt chart' => 'Gantt diagram',
-    'Gantt chart for all projects' => 'Gantt diagram az összes projektre vonatkozóan',
-    'Gantt chart for this project' => 'Gantt diagram erre a projektre vonatkozóan',
+    'There is no start date or due date for this task.' => 'Nincs kezdési dátum vagy határidő ehhez a feladathoz.',
+    'Moving or resizing a task will change the start and due date of the task.' => 'Egy feladat áthelyezése vagy átméretezése megváltoztatja a feladat kezdési dátumát és határidejét.',
+    'There is no task in your project.' => 'Nincs feladat a projektjében.',
+    'Gantt chart' => 'Gantt-diagram',
+    'Gantt chart for all projects' => 'Gantt-diagram az összes projekthez',
+    'Gantt chart for this project' => 'Gantt-diagram ehhez a projekthez',
     'Project board' => 'Projekt tábla',
-    'There is no start date or end date for this project.' => 'Ennél a projektnél nem adták meg a kezdés és a befejezés dátumát.',
-    'Projects Gantt chart' => 'A projektek Gantt diagramja',
-    'Switch to the Gantt chart view' => 'Átkapcsolás a Gantt diagram nézetre',
+    'There is no start date or end date for this project.' => 'Nincs kezdési dátum vagy befejezési dátum ehhez a projekthez.',
+    'Projects Gantt chart' => 'A projektek Gantt-diagramja',
+    'Switch to the Gantt chart view' => 'Váltás a Gantt-diagram nézetre',
 );
 
