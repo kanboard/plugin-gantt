@@ -15,7 +15,7 @@ class Plugin extends Base
         $this->route->addRoute('gantt/:project_id', 'TaskGanttController', 'show', 'plugin');
         $this->route->addRoute('gantt/:project_id/sort/:sorting', 'TaskGanttController', 'show', 'plugin');
         
-        $this->projectAccessMap->add('ProjectGanttController', 'save', Role::PROJECT_MEMBER);
+        $this->projectAccessMap->add('ProjectGanttController', 'save', Role::PROJECT_MANAGER);
         $this->projectAccessMap->add('TaskGanttController', 'save', Role::PROJECT_MEMBER);
 
         $this->template->hook->attach('template:project-header:view-switcher', 'Gantt:project_header/views');
