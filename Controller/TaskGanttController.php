@@ -54,11 +54,11 @@ class TaskGanttController extends BaseController
         $values = [];
 
         if (! empty($changes['start'])) {
-            $values['date_started'] = strtotime($changes['start']);
+            $values['date_started'] = strtotime($changes['start']. " +1 day");
         }
 
         if (! empty($changes['end'])) {
-            $values['date_due'] = strtotime($changes['end']);
+            $values['date_due'] = strtotime($changes['end']. " +1 day");
         }
 
         if (! empty($values)) {
