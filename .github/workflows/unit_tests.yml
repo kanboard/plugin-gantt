@@ -1,0 +1,90 @@
+name: Unit Tests
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Sqlite:
+    runs-on: ubuntu-latest
+    container: kanboard/tests:latest
+    steps:
+    - name: Checkout Kanboard repo
+      uses: actions/checkout@v2
+      with:
+        repository: kanboard/kanboard
+    - name: Checkout Plugin repo
+      uses: actions/checkout@v2
+      with:
+        path: plugins/Gantt
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+    - name: Unit tests with Sqlite
+      run: ./vendor/bin/phpunit -c tests/units.sqlite.xml plugins/Gantt/Test/
+
+  Postgres:
+    runs-on: ubuntu-latest
+    container: kanboard/tests:latest
+    services:
+      postgres:
+        image: postgres:9.4
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+        - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+    - name: Checkout Kanboard repo
+      uses: actions/checkout@v2
+      with:
+        repository: kanboard/kanboard
+    - name: Checkout Plugin repo
+      uses: actions/checkout@v2
+      with:
+        path: plugins/Gantt
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+    - name: Unit tests with Postgres
+      run: ./vendor/bin/phpunit -c tests/units.postgres.xml plugins/Gantt/Test/
+      env:
+        DB_HOSTNAME: postgres
+        DB_PORT: ${{ job.services.postgres.ports[5432] }}
+ 
+  MariaDB:
+    runs-on: ubuntu-latest
+    container: kanboard/tests:latest
+    services:
+      mariadb:
+        image: mariadb:latest
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+        - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+    - name: Checkout Kanboard repo
+      uses: actions/checkout@v2
+      with:
+        repository: kanboard/kanboard
+    - name: Checkout Plugin repo
+      uses: actions/checkout@v2
+      with:
+        path: plugins/Gantt
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+    - name: Unit tests with MariaDB
+      run: ./vendor/bin/phpunit -c tests/units.mysql.xml plugins/Gantt/Test/
+      env:
+        DB_HOSTNAME: mariadb
+        DB_PASSWORD: secret
+        DB_PORT: ${{ job.services.mariadb.ports[3306] }}
