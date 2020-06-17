@@ -16,7 +16,5 @@ KB.on('dom.ready', function () {
     if (KB.exists('#gantt-chart')) {
         var chart = new Gantt();
         chart.show();
-
-        KB.tooltip();
     }
 });
