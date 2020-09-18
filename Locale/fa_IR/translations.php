@@ -17,4 +17,6 @@ return array(
     'There is no start date or end date for this project.' => 'هیچ تاریخ شروع یا پایانی برای این پروژه وجود ندارد.',
     'Projects Gantt chart' => 'نمودار گانت پروژه ها',
     'Switch to the Gantt chart view' => 'تغییر به نمایش نمودار گانت',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );

@@ -17,4 +17,6 @@ return array(
     'There is no start date or end date for this project.' => 'Il n\'y a pas de date de début ou de date de fin pour ce projet.',
     'Projects Gantt chart' => 'Diagramme de Gantt des projets',
     'Switch to the Gantt chart view' => 'Passer à la vue en diagramme de Gantt',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );

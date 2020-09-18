@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => 'Nincs kezdési dátum vagy befejezési dátum ehhez a projekthez.',
     'Projects Gantt chart' => 'A projektek Gantt-diagramja',
     'Switch to the Gantt chart view' => 'Váltás a Gantt-diagram nézetre',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 

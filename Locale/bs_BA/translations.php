@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => 'Nema početnog ili krajnjeg datuma za ovaj projekat.',
     'Projects Gantt chart' => 'Gantogram projekata',
     'Switch to the Gantt chart view' => 'Promijeni u gantogram pregled',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 

@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => 'В проекте не указаны дата начала или завершения.',
     'Projects Gantt chart' => 'Диаграмма Ганта проектов',
     'Switch to the Gantt chart view' => 'Переключиться в режим диаграммы Ганта',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 

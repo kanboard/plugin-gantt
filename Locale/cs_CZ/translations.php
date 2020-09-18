@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => 'Pro tento projekt neexistuje žádné počáteční ani konečné datum.',
     'Projects Gantt chart' => 'Ganttův graf Projektů',
     'Switch to the Gantt chart view' => 'Přepnout do zobrazení Ganttova grafu',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 

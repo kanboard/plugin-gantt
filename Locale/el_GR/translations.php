@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => 'Δεν υπάρχει ημερομηνία έναρξης ή λήξης για το έργο αυτό.',
     'Projects Gantt chart' => 'Διάγραμμα Gantt έργων',
     'Switch to the Gantt chart view' => 'Μεταφορά σε προβολή διαγράμματος Gantt',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 

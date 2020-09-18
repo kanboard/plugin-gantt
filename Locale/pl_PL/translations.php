@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => 'Nie zdefiniowano czasu trwania projektu',
     'Projects Gantt chart' => 'Wykres Gantta dla projektów',
     'Switch to the Gantt chart view' => 'Przełącz na wykres Gantta',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 

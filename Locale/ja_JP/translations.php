@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => 'このプロジェクトに開始日または終了日はありません',
     'Projects Gantt chart' => 'プロジェクト・ガントチャート',
     'Switch to the Gantt chart view' => 'ガントチャート・ビューに切替',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 

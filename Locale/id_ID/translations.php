@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => 'Tidak ada waktu mulai atau waktu berakhir untuk proyek ini',
     'Projects Gantt chart' => 'Grafik Gantt proyek',
     'Switch to the Gantt chart view' => 'Beralih ke tampilan grafik Gantt',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 
