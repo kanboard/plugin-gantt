@@ -23,7 +23,7 @@ class TaskGanttController extends BaseController
     {
         $project = $this->getProject();
         $search = $this->helper->projectHeader->getSearchQuery($project);
-        $sorting = $this->request->getStringParam('sorting', 'date_started');
+        $sorting = $this->request->getStringParam('sorting', '');
         if ($sorting === 'date_due') {
             $filter = $this->taskLexer->build($search)
             ->withFilter(new TaskProjectFilter($project['id']))
@@ -39,10 +39,10 @@ class TaskGanttController extends BaseController
             $filter->getQuery()->asc(TaskModel::TABLE.'.date_started')->asc(TaskModel::TABLE.'.date_creation');
         }
         else if ($sorting === 'date_due') {
-            $filter->getQuery()->asc(TaskModel::TABLE.'.date_due')->desc(TaskModel::TABLE.'.date_started');
+            $filter->getQuery()->asc(TaskModel::TABLE.'.date_due')->asc(TaskModel::TABLE.'.date_started');
         }
         else if ($sorting === 'date_started') {
-            $filter->getQuery()->asc(TaskModel::TABLE.'.date_started')->desc(TaskModel::TABLE.'.date_due');
+            $filter->getQuery()->asc(TaskModel::TABLE.'.date_started')->asc(TaskModel::TABLE.'.date_due');
         }
         else {
             $filter->getQuery()->asc('column_position')->asc(TaskModel::TABLE.'.position');
