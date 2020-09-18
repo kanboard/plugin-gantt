@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => '当前项目没有开始或结束日期',
     'Projects Gantt chart' => '项目甘特图',
     'Switch to the Gantt chart view' => '切换到甘特图',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 

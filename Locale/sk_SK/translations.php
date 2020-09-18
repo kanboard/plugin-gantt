@@ -17,4 +17,6 @@ return array(
     'There is no start date or end date for this project.' => 'Projekt nemá dátum začiatku alebo ukončenia.',
     'Projects Gantt chart' => 'Gantov diagram projektov',
     'Switch to the Gantt chart view' => 'Prepnúť na zobrazenie Ganttovho diagramu',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );

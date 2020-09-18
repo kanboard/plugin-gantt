@@ -4,6 +4,7 @@ namespace Kanboard\Plugin\Gantt\Controller;
 
 use Kanboard\Controller\BaseController;
 use Kanboard\Filter\TaskProjectFilter;
+use Kanboard\Plugin\Gantt\Filter\TaskGanttFilter;
 use Kanboard\Model\TaskModel;
 
 /**
@@ -22,8 +23,13 @@ class TaskGanttController extends BaseController
     {
         $project = $this->getProject();
         $search = $this->helper->projectHeader->getSearchQuery($project);
-        $sorting = $this->request->getStringParam('sorting', '');
-        $filter = $this->taskLexer->build($search)->withFilter(new TaskProjectFilter($project['id']));
+        $sorting = $this->request->getStringParam('sorting', 'date_started');
+        if ($sorting === 'date_due') {
+            $filter = $this->taskLexer->build($search)
+            ->withFilter(new TaskProjectFilter($project['id']))
+            ->withFilter(new TaskGanttFilter('all'));
+        }
+        else $filter = $this->taskLexer->build($search)->withFilter(new TaskProjectFilter($project['id']));
 
         if($sorting === '') {
           $sorting = $this->configModel->get('gantt_task_sort', 'board');
@@ -31,7 +37,14 @@ class TaskGanttController extends BaseController
 
         if ($sorting === 'date') {
             $filter->getQuery()->asc(TaskModel::TABLE.'.date_started')->asc(TaskModel::TABLE.'.date_creation');
-        } else {
+        }
+        else if ($sorting === 'date_due') {
+            $filter->getQuery()->asc(TaskModel::TABLE.'.date_due')->desc(TaskModel::TABLE.'.date_started');
+        }
+        else if ($sorting === 'date_started') {
+            $filter->getQuery()->asc(TaskModel::TABLE.'.date_started')->desc(TaskModel::TABLE.'.date_due');
+        }
+        else {
             $filter->getQuery()->asc('column_position')->asc(TaskModel::TABLE.'.position');
         }
 

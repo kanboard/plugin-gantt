@@ -14,5 +14,7 @@ return array(
     'There is no start date or end date for this project.' => '이 프로젝트에는 시작날짜와 종료날짜가 없습니다',
     'Projects Gantt chart' => '프로젝트 간트차트',
     'Switch to the Gantt chart view' => '간트 차트 보기로 변경',
+    // 'Show dated only' => '',
+    // 'Sort by start date' => '',
 );
 
