@@ -364,9 +364,6 @@ Gantt.prototype.updateDataAndPosition = function(block, startDate) {
         record.start = this.addDays(this.cloneDate(startDate), daysFromStart);
         record.date_started_not_defined = true;
     }
-    else if (record.date_started_not_defined) {
-        delete record.start;
-    }
 
     // Set new end date
     var width = block.outerWidth();
@@ -375,9 +372,6 @@ Gantt.prototype.updateDataAndPosition = function(block, startDate) {
     if (!record.date_due_not_defined || this.compareDate(newEnd, record.end)) {
         record.end = newEnd;
         record.date_due_not_defined = true;
-    }
-    else if (record.date_due_not_defined) {
-        delete record.end;
     }
 
     if (record.type === "task" && numberOfDays > 0) {
