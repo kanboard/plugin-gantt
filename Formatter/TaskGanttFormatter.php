@@ -57,6 +57,7 @@ class TaskGanttFormatter extends BaseFormatter implements FormatterInterface
         return array(
             'type' => 'task',
             'id' => $task['id'],
+			'subtasks' => $this -> subtaskModel -> getAll($task['id']) ,
             'title' => $task['title'],
             'start' => array(
                 (int) date('Y', $start),

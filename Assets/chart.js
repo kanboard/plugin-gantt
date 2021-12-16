@@ -242,6 +242,11 @@ Gantt.prototype.getTaskTooltip = function(record) {
         .append($('<span>').text('#' + record.id + ' ' + record.title))
         .append($('<br>'))
         .append($('<span>').text(assigneeLabel + ' ' + (record.assignee ? record.assignee : '')));
+		
+    for (var i = 0; i < record.subtasks.length; i++) {
+        tooltip.append($('<br>'));
+        tooltip.append(jQuery('<strong>').text('-->' + record.subtasks[i].id + ' ' + record.subtasks[i].title));
+    }
 
     return this.getTooltipFooter(record, tooltip);
 };
